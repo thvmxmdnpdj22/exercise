@@ -115,6 +115,8 @@ export default function UserPose() {
     const canvas = canvasRef.current;
     if (!canvas || !results) return;
 
+    const poseSection = document.getElementById("pose-section");
+
     // 컨테이너를 640×360으로 고정했으니 버퍼도 동일 픽셀로 맞춤
     const cw = 640;
     const ch = 360;
@@ -238,16 +240,16 @@ export default function UserPose() {
   }
 
   return (
-    <div className="rounded-2xl bg-white p-4 shadow-sm">
+    <div className="rounded-2xl bg-white p-4 shadow-sm" style={{width: '100%'}}>
       <div className="mb-3 text-sm font-semibold text-gray-700">사용자 화면</div>
 
       {/* ▶ 운동영상과 완전 동일한 컨테이너 크기(640×360, 16:9) */}
       <div
+        id="pose-section"
         className="relative rounded-xl overflow-hidden"
         style={{
-          width: "640px",
-          height: "360px",
           aspectRatio: "16 / 9",
+          position: 'relative'
         }}
       >
         {/* 입력 전용 웹캠(숨김) */}
@@ -255,14 +257,22 @@ export default function UserPose() {
           ref={webcamRef}
           className="absolute inset-0 w-full h-full object-contain"
           audio={false}
-          style={{ opacity: 0, pointerEvents: "none" }}
+          style={{ pointerEvents: "none", display: 'contents' }}
         />
 
         {/* 합성 캔버스(왼쪽과 동일 스케일 정책: contain) */}
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
-          style={{ pointerEvents: "none", zIndex: 10 }}
+          style={{
+            pointerEvents: "none",
+            zIndex: 10,
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+          }}
         />
 
         {/* 반투명 오버레이: contain + 좌우반전( selfiemode:true 일치 ) */}
@@ -280,6 +290,11 @@ export default function UserPose() {
             zIndex: 20,
             transform: "scaleX(-1)",
             transformOrigin: "center",
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
           }}
         />
       </div>

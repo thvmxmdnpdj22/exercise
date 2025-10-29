@@ -11,11 +11,11 @@ export default function LiveSession({ metrics = {}, onFinish = () => {} }) {
 
       {/* 가로 2칸 고정 */}
       <div className="mt-6 w-full overflow-x-auto">
-        <div className="flex flex-nowrap gap-6 items-start justify-start" style={{ minWidth: 1340 }}>
-          <div className="shrink-0" style={{ width: 640, flex: "0 0 640px" }}>
+        <div className="flex flex-nowrap gap-6 items-start justify-start" style={{ minWidth: 1340, position: 'relative' }}>
+          <div className="shrink-0" style={{ width: '50%', float: 'left' }}>
             <VideoPanel title="가이드 영상" src="/videos/Lunge.mp4" autoPlay muted loop />
           </div>
-          <div className="shrink-0" style={{ width: 640, flex: "0 0 640px" }}>
+          <div className="shrink-0" style={{ width: '50%', float: 'right' }}>
             <UserPose />
           </div>
         </div>
