@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import ExerciseCard from "../components/ExerciseCard";
 
-const ExerciseSelect = ({ onStart }) => {
+const ExerciseSelect = ({
+  onSelect,
+  onStart
+}) => {
   const [selected, setSelected] = useState(null);
 
   const exercises = [
@@ -9,16 +12,19 @@ const ExerciseSelect = ({ onStart }) => {
       title: "코어 근육 훈련",
       description: "균형 운동으로 안정성과 코어 근력을 향상시키세요.",
       image: "core.jpg",
+      video: 'Lunge.mp4',
     },
     {
       title: "스쿼트 훈련",
       description: "하체 근력 강화를 위한 완벽한 스쿼트 자세를 마스터하세요.",
-      image: "squat.jpg",
+      image: "shoulder.jpg",
+      video: 'shoulder.mp4',
     },
     {
       title: "어깨 훈련",
       description: "효과적인 운동으로 어깨를 강화하고 탄탄하게 만드세요.",
-      image: "shoulder.jpg",
+      image: "Test_Move.png",
+      video: 'Test_MOV.mov',
     },
   ];
 
@@ -58,7 +64,10 @@ const ExerciseSelect = ({ onStart }) => {
             description={ex.description}
             image={ex.image}
             isSelected={selected === idx}
-            onClick={() => setSelected(idx)}
+            onClick={() => {
+              setSelected(idx);
+              onSelect(ex);
+            }}
           />
         ))}
       </div>

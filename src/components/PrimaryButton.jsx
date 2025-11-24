@@ -36,6 +36,8 @@ export default function PrimaryButton({
     transition: "transform .06s ease, box-shadow .2s ease, background .2s ease",
     minWidth,
     boxShadow: "0 3px 12px rgba(34,164,93,0.25)",
+    marginTop: '20px',
+    marginLeft: '-110px'
   };
 
   const styleVariant = disabled ? variants.disabled : variants[variant];

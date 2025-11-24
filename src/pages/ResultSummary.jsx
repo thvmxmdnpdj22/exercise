@@ -72,7 +72,7 @@ export default function ResultSummary({
           </div>
           <div style={statCard}>
             <div style={statLabel}>총 반복 횟수</div>
-            <div style={statValue}>{metrics.reps}</div>
+            <div style={statValue}>{metrics.repeat}</div>
           </div>
         </div>
 
