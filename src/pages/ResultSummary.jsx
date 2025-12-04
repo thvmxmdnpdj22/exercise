@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PrimaryButton from "../components/PrimaryButton";
 
 export default function ResultSummary({
-  metrics = { accuracy: 92, reps: 50 },
+  metrics = { accuracy: 92, success: 10, fail: 3, repeat: 50 },
   feedback = "정확도를 높이려면 스트레칭 중 일관된 팔 각도를 유지하세요. 훌륭한 성과를 계속 유지하세요!",
+  userId = "test_user_123", // 실제로는 부모에서 props로 내려주는 걸 추천
   onSave = () => {},
   onReport = () => {},
   onBack = () => {},
 }) {
   const container = {
-    backgroundColor: "#F6FBF7", // 연한 초록 배경
+    backgroundColor: "#F6FBF7",
     minHeight: "100vh",
     padding: "32px 0",
   };
@@ -59,6 +60,38 @@ export default function ResultSummary({
     marginTop: 18,
   };
 
+  useEffect(() => {handleSaveClick()
+    console.log("metrics:", metrics);
+  }, [metrics]);
+
+  // 👉 여기서 FastAPI로 POST 요청
+  const handleSaveClick = async () => {
+    try {
+      const res = await fetch("http://127.0.0.1:8000/record", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          accuracy: metrics.accuracy,
+          fail: metrics.fail,
+          success: metrics.success,
+          repeat: metrics.repeat,
+          user_id: userId,
+        }),
+      });
+
+      const data = await res.json();
+      console.log("서버 응답:", data);
+
+      // 필요하면 부모 콜백도 호출
+      onSave(data);
+    } catch (err) {
+      console.error("기록 저장 실패:", err);
+      // 에러 상황에서 UI로 알려주고 싶으면 여기서 상태를 추가해서 토스트/알림 띄우면 됨
+    }
+  };
+
   return (
     <div style={container}>
       <div style={card}>
@@ -82,7 +115,10 @@ export default function ResultSummary({
 
         {/* 버튼들 */}
         <div style={btnRow}>
-          <PrimaryButton onClick={onSave}>기록 저장</PrimaryButton>
+          {/* 기록 저장 → FastAPI 호출 */}
+          <PrimaryButton onClick={handleSaveClick}>기록 저장</PrimaryButton>
+
+          {/* 보고서 보기 → 기존 콜백 유지 */}
           <PrimaryButton onClick={onReport}>보고서 보기</PrimaryButton>
         </div>
 
